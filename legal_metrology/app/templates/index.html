@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Department of Consumer Affairs | Legal Metrology Field Inspection System (IFIS)</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+  <!-- Top Strip: Government of India & Ministry Meta -->
+  <div class="gov-top-strip">
+    <div class="emblem-title">
+      <span>भारत सरकार</span>
+      <span style="color:#cbd5e1;">|</span>
+      <span>Government of India</span>
+    </div>
+    <div class="ministry-meta">
+      <span id="ministryBannerText">Ministry of Consumer Affairs, Food & Public Distribution</span>
+      <span class="lang-toggle" onclick="toggleLanguage()">English / हिन्दी</span>
+    </div>
+  </div>
+
+  <!-- Crimson Main Banner Header -->
+  <header class="doca-banner-header" id="mainHeader" style="display:none;">
+    <div class="doca-branding">
+      <div class="doca-logo-circle">⚖️</div>
+      <div class="doca-titles">
+        <h1>उपभोक्ता मामले विभाग</h1>
+        <h2>Department of Consumer Affairs</h2>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="field-mode-badge" id="modeBadge">
+        <span class="field-mode-dot"></span>
+        <span id="modeText">Field Mode Active</span>
+      </div>
+      <button class="btn-logout" onclick="switchView('viewAdmin')" id="btnSwitchAdmin" title="Switch to Admin Console">🏛️ Admin</button>
+      <button class="btn-logout" onclick="switchView('viewCapture')" id="btnSwitchInspector" style="display:none;" title="Switch to Field Inspector">👮 Inspector</button>
+      <button class="btn-logout" onclick="logoutToLogin()">➔ Logout</button>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       VIEW 1: LOGIN SCREEN (PAGE 1)
+       ========================================================================= -->
+  <div class="login-screen-wrapper active" id="viewLogin">
+    <div class="login-card">
+      <div class="login-card-header">
+        <div class="doca-logo-circle" style="width:36px; height:36px; font-size:18px;">⚖️</div>
+        <div>
+          <div style="font-size:0.7rem; color:#fecaca; text-transform:uppercase;">उपभोक्ता मामले विभाग</div>
+          <div style="font-size:0.95rem; font-weight:700; text-transform:uppercase;">Department of Consumer Affairs</div>
+        </div>
+      </div>
+
+      <!-- Role Tabs: Inspector vs Admin -->
+      <div class="login-role-tabs">
+        <button type="button" class="role-tab-btn active" id="tabInspector" onclick="selectLoginRole('inspector')">
+          👮 INSPECTOR
+        </button>
+        <button type="button" class="role-tab-btn" id="tabAdmin" onclick="selectLoginRole('admin')">
+          👤 ADMIN
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form class="login-form-body" onsubmit="handleLoginSubmit(event)">
+        <div class="form-field-group">
+          <label id="lblBadgeId">Inspector Badge / SSO ID</label>
+          <div class="input-with-icon">
+            <span class="icon">🪪</span>
+            <input type="text" id="loginUsername" class="doca-input" value="DOCA-INSP-2026-449" placeholder="e.g. DOCA-INSP-2026-449" required />
+          </div>
+        </div>
+
+        <div class="form-field-group">
+          <label>Password</label>
+          <div class="input-with-icon">
+            <span class="icon">🔒</span>
+            <input type="password" id="loginPassword" class="doca-input" value="••••••••••••" placeholder="Enter secure password" required />
+          </div>
+          <div class="field-meta-row">
+            <span></span>
+            <a href="javascript:void(0)" onclick="alert('Password reset link sent to registered NIC email.')">Forgot Password?</a>
+          </div>
+        </div>
+
+        <div class="security-footer-row">
+          <span>🛡️ Secure NIC Gateway</span>
+          <span>NCH: <strong>1915</strong></span>
+        </div>
+
+        <button type="submit" class="btn-login-submit" id="btnLoginSubmit">
+          LOGIN AS INSPECTOR ➔
+        </button>
+
+        <div class="login-subhelp">
+          Experiencing issues? <a href="https://consumerhelpline.gov.in/" target="_blank">National Consumer Helpline</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       VIEW 2: ON-SITE INSPECTION & EVIDENCE CAPTURE (PAGE 2)
+       ========================================================================= -->
+  <main class="app-view" id="viewCapture">
+    <div class="section-meta-header">
+      <div class="section-meta-title">
+        <h2>📷 On-Site Inspection & Evidence Capture</h2>
+        <p>Record verification findings, upload sample photographs, and synchronize inspection geotags.</p>
+      </div>
+      <div class="case-ref-badge" id="caseRefBadge">Case Ref: DOCA-2026-INSP</div>
+    </div>
+
+    <div class="two-col-layout">
+      <!-- Left Column: Media Dropzone & Previews -->
+      <div class="panel-card">
+        <div class="panel-card-title">
+          <span>Inspection Evidence / Media Drop Zone</span>
+          <span class="sub">MAX. 3 IMAGES (PNG/JPG)</span>
+        </div>
+
+        <!-- Dropzone Box -->
+        <div class="dropzone-box" id="dropzoneBox" onclick="triggerFileInput()">
+          <div class="dropzone-icon">☁️</div>
+          <strong>Drag and drop images here, or browse files</strong>
+          <p>Supports batch upload of packaging labels, receipts, and product seal</p>
+          <input type="file" id="fileInputElem" multiple accept="image/*" style="display:none;" onchange="handleFileSelect(event)" />
+        </div>
+
+        <!-- Click Images & Add Images Buttons -->
+        <div class="capture-btn-group">
+          <button type="button" class="btn-action-dark" onclick="triggerFileInput()">📷 Click Images</button>
+          <button type="button" class="btn-action-light" onclick="triggerFileInput()">+ Add Images</button>
+        </div>
+
+        <!-- 3 Captured Photo Previews Strip -->
+        <div class="preview-slots-grid">
+          <div class="preview-slot" id="slot1">
+            <span class="slot-label">Image 1 (Front PDP)</span>
+          </div>
+          <div class="preview-slot" id="slot2">
+            <span class="slot-label">Image 2 (Back Label)</span>
+          </div>
+          <div class="preview-slot" id="slot3">
+            <span class="slot-label">Image 3 (Base Stamp)</span>
+          </div>
+        </div>
+
+        <!-- 1-Touch Demo Samples -->
+        <div class="sample-presets-row">
+          <span class="label">⚡ 1-TOUCH TEST SAMPLES (PRE-LOAD):</span>
+          <button type="button" class="sample-chip-btn" onclick="loadDemoSample('electronics')">⚡ GaN Adapter (With ID-1 Card)</button>
+          <button type="button" class="sample-chip-btn" onclick="loadDemoSample('boroplus')">🧴 BoroPlus (3-Panel)</button>
+          <button type="button" class="sample-chip-btn" onclick="loadDemoSample('food')">🍪 Nutri-Crunch Biscuits</button>
+        </div>
+      </div>
+
+      <!-- Right Column: Metadata Form -->
+      <div class="panel-card">
+        <div class="panel-card-title">
+          <span>Inspection Parameters & Location</span>
+          <span class="sub">SEC 15 LMA 2009</span>
+        </div>
+
+        <div class="form-grid-row">
+          <div>
+            <label style="font-size:0.75rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">NAME OF INSPECTOR</label>
+            <input type="text" id="inspectorNameInput" class="doca-form-control" value="Shri R. K. Sharma" />
+          </div>
+          <div>
+            <label style="font-size:0.75rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">OFFICIAL INSPECTOR ID</label>
+            <input type="text" id="inspectorIdInput" class="doca-form-control" value="DOCA-INSP-2026-449" />
+          </div>
+        </div>
+
+        <div class="form-field-group" style="margin-bottom:12px;">
+          <label style="font-size:0.75rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">ESTABLISHMENT / PREMISES ADDRESS</label>
+          <input type="text" id="premisesAddressInput" class="doca-form-control" value="Plot No. 42, Industrial Area, Phase-II, Okhla, New Delhi - 110020" placeholder="Enter complete physical address of inspected premises..." />
+        </div>
+
+        <div class="form-grid-row">
+          <div>
+            <label style="font-size:0.75rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">GEOTAG COORDINATES</label>
+            <button type="button" class="btn-pinpoint" id="btnGeotagLock" onclick="refreshGPS()">
+              📍 <span id="geotagText">Lat: 28.5355° N, Long: 77.2628° E (±3.2m Lock)</span>
+            </button>
+          </div>
+          <div>
+            <label style="font-size:0.75rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">GOODS CLASSIFICATION / CATEGORY</label>
+            <select id="categorySelectElem" class="doca-form-control">
+              <option value="general">Select which good it belongs to...</option>
+              <option value="cosmetics" selected>Cosmetics & Personal Care (Rule 34)</option>
+              <option value="food">Food & Beverages (FSSAI 2020)</option>
+              <option value="electronics">Electronics & Appliances (BIS CRS)</option>
+              <option value="general">General Packaged Commodities</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-field-group" style="margin-bottom:18px;">
+          <label style="font-size:0.75rem; font-weight:700; color:#334155; display:block; margin-bottom:4px;">REFERENCE CARD FOR SPATIAL CALIBRATION (ISO/IEC 7810 ID-1)</label>
+          <select id="cardSelectElem" class="doca-form-control">
+            <option value="ID_1_STANDARD" selected>Standard ID-1 Card (Aadhaar / PAN / DL / Debit - 85.60 x 53.98 mm)</option>
+            <option value="BUSINESS_CARD">Standard Business Card (85.0 x 55.0 mm)</option>
+            <option value="CUSTOM_TARGET">Optical Calibration Target Card (85.6 mm)</option>
+          </select>
+        </div>
+
+        <!-- Scan and Proceed CTA Button -->
+        <button type="button" class="btn-scan-proceed" id="btnScanProceed" onclick="executeScanAndProceed()">
+          <span>☲</span> SCAN AND PROCEED ➔
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 3: CAPTURED SAMPLE EVIDENCE & EXTRACTED VALUES (PAGE 3)
+       ========================================================================= -->
+  <main class="app-view" id="viewReview">
+    <!-- Top Box: Thumbnails of Loaded Images -->
+    <div class="sample-evidence-box">
+      <div class="sample-evidence-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <span>📷 Captured Sample Evidence</span>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <span id="cardStatusBadge" style="background:#e0f2fe; color:#0369a1; padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:700; border:1px solid #bae6fd;">💳 CARD: DETECTING...</span>
+          <span id="avgTextSizeBadge" style="background:#f1f5f9; color:#475569; padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:700; border:1px solid #cbd5e1;">📏 AVG TEXT: MEASURING...</span>
+          <span style="color:#16a34a; font-weight:700;" id="evidenceStatusText">Lot 1 Loaded (3 Panels Available)</span>
+        </div>
+      </div>
+      <div class="evidence-thumbnails-row">
+        <div class="evidence-thumb-card" id="thumbCard1">
+          <img id="reviewImg1" src="" alt="Panel 1" />
+          <span>Image 1 (Front PDP)</span>
+        </div>
+        <div class="evidence-thumb-card" id="thumbCard2">
+          <img id="reviewImg2" src="" alt="Panel 2" />
+          <span>Image 2 (Back Label)</span>
+        </div>
+        <div class="evidence-thumb-card" id="thumbCard3">
+          <img id="reviewImg3" src="" alt="Panel 3" />
+          <span>Image 3 (Base Stamp)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mandatory Declarations Table (Editable Format) -->
+    <div class="declarations-card">
+      <div class="declarations-card-title">
+        Legal Metrology (Packaged Commodities) Rules, 2011 — Mandatory Declarations
+      </div>
+
+      <table class="editable-table">
+        <thead>
+          <tr>
+            <th>What is Required to be Declared</th>
+            <th>Extracted Values (Editable Format)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-col">
+              Manufacturer / Packer Address
+              <span class="sub-rule">Name and complete street address under Rule 6(1)(a)</span>
+            </td>
+            <td>
+              <textarea id="valAddress" class="table-input" rows="2">Plot No. 42, Industrial Area, Phase-II, Okhla, New Delhi - 110020</textarea>
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">
+              Generic / Common Name
+              <span class="sub-rule">Commodity identification under Rule 6(1)(b)</span>
+            </td>
+            <td>
+              <input type="text" id="valCommonName" class="table-input" value="Refined Sunflower Edible Oil" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">
+              Net Quantity
+              <span class="sub-rule">Standard metric unit (g, kg, l, ml) under Rule 6(1)(c)</span>
+            </td>
+            <td>
+              <input type="text" id="valNetQty" class="table-input" value="1.0 L (910 g)" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">
+              Month & Year of Packing
+              <span class="sub-rule">Manufacturing/packing date stamp under Rule 6(1)(d)</span>
+            </td>
+            <td>
+              <input type="text" id="valDate" class="table-input" value="08/2026" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">
+              MRP & Unit Sale Price (USP)
+              <span class="sub-rule">Inclusive of all taxes & per-unit rate under Rule 6(1)(e) & 6(1)(s)</span>
+            </td>
+            <td>
+              <div class="dual-input-row">
+                <input type="text" id="valMRP" class="table-input" value="₹ 145.00 (incl. of all taxes)" />
+                <input type="text" id="valUSP" class="table-input" value="₹ 0.145 per ml" />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">
+              Country of Origin
+              <span class="sub-rule">Mandatory origin declaration under Rule 6(10)</span>
+            </td>
+            <td>
+              <input type="text" id="valOrigin" class="table-input" value="India" />
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">
+              Consumer Care Cell
+              <span class="sub-rule">Helpline, email & contact address under Rule 6(1)(n)</span>
+            </td>
+            <td>
+              <input type="text" id="valCare" class="table-input" value="customercare@company.in | 1800-11-4090" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Proceed Button -->
+      <button type="button" class="btn-scan-proceed" style="max-width:320px; margin:0 auto;" onclick="proceedToAuditReport()">
+        PROCEED TO REPORT GENERATION ➔
+      </button>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 4: RULE-WISE VERIFICATION AUDIT SHEET (PAGE 4)
+       ========================================================================= -->
+  <main class="app-view" id="viewAudit">
+    <!-- Top Summary Strip with Stat Cards -->
+    <div class="audit-summary-strip">
+      <div class="stat-badges-row">
+        <div class="stat-badge-card pass">
+          <div class="circle-icon">✓</div>
+          <div class="meta">
+            <span class="label">Passed Clauses</span>
+            <strong class="count" id="countPassed">6</strong>
+          </div>
+        </div>
+        <div class="stat-badge-card fail">
+          <div class="circle-icon">✗</div>
+          <div class="meta">
+            <span class="label">Failed Clauses</span>
+            <strong class="count" id="countFailed">1</strong>
+          </div>
+        </div>
+        <div class="stat-badge-card" style="background:#f0f9ff; border:1px solid #bae6fd;">
+          <div class="circle-icon" style="background:#0284c7; color:#fff;">💳</div>
+          <div class="meta">
+            <span class="label" style="color:#0369a1;">Reference Card</span>
+            <strong class="count" style="color:#0369a1; font-size:0.95rem;" id="auditCardStat">Detecting...</strong>
+          </div>
+        </div>
+        <div class="stat-badge-card" style="background:#f8fafc; border:1px solid #e2e8f0;">
+          <div class="circle-icon" style="background:#475569; color:#fff;">📏</div>
+          <div class="meta">
+            <span class="label" style="color:#475569;">Avg Font Size</span>
+            <strong class="count" style="color:#1e293b; font-size:0.95rem;" id="auditAvgTextCard">Measuring...</strong>
+          </div>
+        </div>
+      </div>
+      <div class="case-ref-badge" id="auditCaseRef">CASE #DOCA-2026-LM49</div>
+    </div>
+
+    <!-- Audit Sheet Table Card -->
+    <div class="audit-table-card">
+      <div class="audit-table-header">
+        <h3>📋 Rule-Wise Verification Audit Sheet</h3>
+        <span class="tag">PC Rules, 2011 Assessment</span>
+      </div>
+
+      <table class="audit-table">
+        <thead>
+          <tr>
+            <th>Rule / Clause</th>
+            <th>What is Required</th>
+            <th style="text-align:right;">Verdict</th>
+          </tr>
+        </thead>
+        <tbody id="auditTableBody">
+          <!-- Populated dynamically via JavaScript -->
+          <tr>
+            <td class="rule-col">6 (1) (a)</td>
+            <td class="desc-col">
+              <strong>Name and Complete Address</strong>
+              <span class="subtext">Manufacturer, packer or importer physical address with pin code</span>
+            </td>
+            <td style="text-align:right;"><span class="status-badge pass">✓ PASSED</span></td>
+          </tr>
+          <tr>
+            <td class="rule-col">6 (1) (b)</td>
+            <td class="desc-col">
+              <strong>Generic or Common Name</strong>
+              <span class="subtext">Clear commodity identification on the principal display panel</span>
+            </td>
+            <td style="text-align:right;"><span class="status-badge pass">✓ PASSED</span></td>
+          </tr>
+          <tr>
+            <td class="rule-col">6 (1) (c)</td>
+            <td class="desc-col">
+              <strong>Net Quantity in Standard Units</strong>
+              <span class="subtext">Permissible metric unit of weight/volume declaration</span>
+            </td>
+            <td style="text-align:right;"><span class="status-badge pass">✓ PASSED</span></td>
+          </tr>
+          <tr>
+            <td class="rule-col">6 (1) (d)</td>
+            <td class="desc-col">
+              <strong>Month & Year of Manufacture / Packing</strong>
+              <span class="subtext">Clear packaging date stamp in MM/YYYY format</span>
+            </td>
+            <td style="text-align:right;"><span class="status-badge pass">✓ PASSED</span></td>
+          </tr>
+          <tr>
+            <td class="rule-col">6 (1) (s)</td>
+            <td class="desc-col">
+              <strong>Unit Sale Price (USP) Display</strong>
+              <span class="subtext" id="uspSubtext">Per g/ml unit price calculation missing on retail carton</span>
+            </td>
+            <td style="text-align:right;"><span class="status-badge fail" id="uspBadge">✗ FAILED</span></td>
+          </tr>
+          <tr>
+            <td class="rule-col">6 (10)</td>
+            <td class="desc-col">
+              <strong>Country of Origin</strong>
+              <span class="subtext">Mandatory origin declaration on packaging</span>
+            </td>
+            <td style="text-align:right;"><span class="status-badge pass">✓ PASSED</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Bottom Action Buttons: Edit & Download -->
+      <div class="audit-actions-row">
+        <button type="button" class="btn-audit-edit" onclick="switchView('viewReview')">
+          ✏️ EDIT
+        </button>
+        <button type="button" class="btn-audit-download" onclick="downloadSeizurePDF()">
+          📥 DOWNLOAD
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 5: ADMIN DASHBOARD / ENFORCEMENT REGISTRY (PAGE 6)
+       ========================================================================= -->
+  <main class="app-view" id="viewAdmin">
+    <!-- Admin Controls Bar -->
+    <div class="admin-toolbar">
+      <div class="date-filter-group">
+        <span>📅 DATE RANGE:</span>
+        <input type="date" value="2026-08-01" />
+        <span>to</span>
+        <input type="date" value="2026-08-30" />
+        <button type="button" class="btn-filter" onclick="alert('Filter applied!')">Filter</button>
+      </div>
+
+      <div class="search-input-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search specific inspector by name or badge ID..." oninput="filterAdminTable(this.value)" />
+      </div>
+    </div>
+
+    <!-- Registry Card -->
+    <div class="registry-card">
+      <div class="registry-card-header">
+        <span class="registry-card-title">🏢 Inspection Log & Enforcement Registry</span>
+        <span style="font-size:0.75rem; color:#64748b; font-weight:600;">Total Records: 4</span>
+      </div>
+
+      <table class="registry-table" id="adminTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Company Name & Address</th>
+            <th>Status</th>
+            <th>Product Details</th>
+            <th style="text-align:center;">Details</th>
+            <th style="text-align:center;">PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>30-08-2026<br/><span style="font-size:0.68rem; color:#64748b;">11:45 AM</span></td>
+            <td>
+              <strong>Ananda Foods & Beverages Pvt Ltd</strong><br/>
+              <span style="font-size:0.72rem; color:#64748b;">Plot 42, Industrial Area, Phase-II, Okhla, New Delhi - 110020</span><br/>
+              <span style="font-size:0.68rem; color:#94a3b8;">Inspector: Shri R. K. Sharma (ID: 449)</span>
+            </td>
+            <td><span class="status-badge fail">✗ FAILED</span></td>
+            <td>
+              <strong>Refined Sunflower Oil (1.0 L)</strong><br/>
+              <span style="font-size:0.72rem; color:#dc2626;">Breach: Rule 6(1)(s) USP Missing</span>
+            </td>
+            <td style="text-align:center;"><button class="btn-table-view" onclick="switchView('viewAudit')">View</button></td>
+            <td style="text-align:center;"><button class="btn-pdf-icon" onclick="downloadSeizurePDF()" title="Download PDF">📄</button></td>
+          </tr>
+          <tr>
+            <td>29-08-2026<br/><span style="font-size:0.68rem; color:#64748b;">03:15 PM</span></td>
+            <td>
+              <strong>Vanguard Electronics Ltd</strong><br/>
+              <span style="font-size:0.72rem; color:#64748b;">Sector 18, Electronic City, Gurugram, HR - 122001</span><br/>
+              <span style="font-size:0.68rem; color:#94a3b8;">Inspector: Smt. P. Verma (ID: 312)</span>
+            </td>
+            <td><span class="status-badge pass">✓ PASSED</span></td>
+            <td>
+              <strong>Smart LED TV 43" (Model: V43-UHD)</strong><br/>
+              <span style="font-size:0.72rem; color:#16a34a;">All declarations compliant</span>
+            </td>
+            <td style="text-align:center;"><button class="btn-table-view" onclick="switchView('viewAudit')">View</button></td>
+            <td style="text-align:center;"><button class="btn-pdf-icon" onclick="downloadSeizurePDF()" title="Download PDF">📄</button></td>
+          </tr>
+          <tr>
+            <td>28-08-2026<br/><span style="font-size:0.68rem; color:#64748b;">10:00 AM</span></td>
+            <td>
+              <strong>Patanjali Agro Commodities</strong><br/>
+              <span style="font-size:0.72rem; color:#64748b;">G.T. Karnal Road, Kundli, Sonipat, HR - 131028</span><br/>
+              <span style="font-size:0.68rem; color:#94a3b8;">Inspector: Shri R. K. Sharma (ID: 449)</span>
+            </td>
+            <td><span class="status-badge pass">✓ PASSED</span></td>
+            <td>
+              <strong>Whole Wheat Flour (5.0 kg Pack)</strong><br/>
+              <span style="font-size:0.72rem; color:#16a34a;">Dual net quantity format verified</span>
+            </td>
+            <td style="text-align:center;"><button class="btn-table-view" onclick="switchView('viewAudit')">View</button></td>
+            <td style="text-align:center;"><button class="btn-pdf-icon" onclick="downloadSeizurePDF()" title="Download PDF">📄</button></td>
+          </tr>
+          <tr>
+            <td>27-08-2026<br/><span style="font-size:0.68rem; color:#64748b;">04:30 PM</span></td>
+            <td>
+              <strong>Avalon Cosmetics Pvt. Ltd. (Emami Ltd.)</strong><br/>
+              <span style="font-size:0.72rem; color:#64748b;">Khasra No. 87/88, Kala Amb, Sirmour, H.P. - 173030</span><br/>
+              <span style="font-size:0.68rem; color:#94a3b8;">Inspector: Shri R. K. Sharma (ID: 449)</span>
+            </td>
+            <td><span class="status-badge pass">✓ PASSED</span></td>
+            <td>
+              <strong>BoroPlus Prickly Heat Powder (200g)</strong><br/>
+              <span style="font-size:0.72rem; color:#16a34a;">See Base reference clause verified</span>
+            </td>
+            <td style="text-align:center;"><button class="btn-table-view" onclick="switchView('viewAudit')">View</button></td>
+            <td style="text-align:center;"><button class="btn-pdf-icon" onclick="downloadSeizurePDF()" title="Download PDF">📄</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Download Overall Consolidated Report Button -->
+      <button type="button" class="btn-consolidated-report" onclick="downloadConsolidatedReport()">
+        📥 DOWNLOAD OVERALL CONSOLIDATED REPORT
+      </button>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="doca-footer" id="mainFooter">
+    © 2026 Department of Consumer Affairs • Directorate of Legal Metrology (Admin Registry) • Integrated Field Inspection System (IFIS)
+  </footer>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div style="font-weight:700; font-size:1.1rem; margin-bottom:6px;" id="loadingTitle">Running Multimodal Compliance Scan...</div>
+    <div style="font-size:0.85rem; color:#cbd5e1;" id="loadingSubtitle">Auditing Rule 6, 7 & 12 under LMPC Rules, 2011...</div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

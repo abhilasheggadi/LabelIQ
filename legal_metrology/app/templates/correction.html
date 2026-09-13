@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR Verification & Correction Screen | Legal Metrology</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+  <!-- Official Header -->
+  <header class="gov-header">
+    <div class="brand-wrapper">
+      <div class="emblem-icon">✏️</div>
+      <div class="title-area">
+        <h1>Inspector OCR Correction & Verification Screen</h1>
+        <p>Memo: <span id="memoIdDisplay" style="color:#fff;">Loading...</span></p>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="/" class="nav-btn">📸 New Scan</a>
+      <a href="/dashboard" class="nav-btn">📋 Ledger</a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+
+    <!-- Top Action Bar -->
+    <div class="env-bar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-weight:700;">Status:</span>
+        <div id="correctionVerdict" class="verdict-badge" style="font-size:1rem;">PENDING</div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn btn-primary" id="reEvaluateBtn">🔄 Re-evaluate Compliance</button>
+        <a href="#" class="btn btn-success" id="correctionPdfBtn" target="_blank" style="display:none;">📥 Download Updated PDF</a>
+      </div>
+    </div>
+
+    <div id="correctionSpinner" class="spinner" style="display:none;"></div>
+
+    <!-- Split Layout: Interactive Canvas on Left, Extracted Fields on Right -->
+    <div class="correction-layout">
+      
+      <!-- Column 1: Interactive Bounding Box Canvas -->
+      <div class="card">
+        <div class="card-header">
+          <h2>🔍 Interactive Label OCR Overlay</h2>
+          <span style="font-size:0.75rem; color:var(--accent-blue);">Click any box to inspect text</span>
+        </div>
+        <div class="canvas-container">
+          <canvas id="annotationCanvas"></canvas>
+        </div>
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:8px; text-align:center;">
+          🟢 Green = Valid Statutory Match | 🔵 Blue = Selected Field | ⚪ White = Other Text
+        </p>
+      </div>
+
+      <!-- Column 2: Editable Mandatory Declarations Form -->
+      <div class="card">
+        <div class="card-header">
+          <h2>📝 Mandatory Declarations (Rule 6 & 7)</h2>
+          <div style="width:160px;">
+            <select id="categorySelect" class="form-control" style="padding:4px 8px; font-size:0.8rem;">
+              <option value="food">🍱 Food</option>
+              <option value="cosmetics">💄 Cosmetics</option>
+              <option value="electronics">⚡ Electronics</option>
+              <option value="general">📦 General</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="fieldsContainer" style="max-height:580px; overflow-y:auto; padding-right:6px;">
+          <!-- Dynamically populated field rows -->
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="/static/js/offline_store.js"></script>
+  <script src="/static/js/correction.js"></script>
+</body>
+</html>

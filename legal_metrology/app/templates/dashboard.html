@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inspection Ledger & Audit Records | Legal Metrology</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+  <!-- Official Header -->
+  <header class="gov-header">
+    <div class="brand-wrapper">
+      <div class="emblem-icon">📋</div>
+      <div class="title-area">
+        <h1>Field Inspection & Seizure Ledger</h1>
+        <p>Statutory Records • Section 15 Legal Metrology Act 2009</p>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="/" class="nav-btn">📸 Scanner</a>
+      <a href="/dashboard" class="nav-btn active">📋 Ledger</a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+
+    <div class="card">
+      <div class="card-header">
+        <h2>📑 Historical Field Audits</h2>
+        <div style="display:flex; gap:10px;">
+          <select id="filterCategory" class="form-control" style="width:140px; padding:6px 10px;">
+            <option value="">All Categories</option>
+            <option value="food">🍱 Food</option>
+            <option value="cosmetics">💄 Cosmetics</option>
+            <option value="electronics">⚡ Electronics</option>
+            <option value="general">📦 General</option>
+          </select>
+          <select id="filterVerdict" class="form-control" style="width:140px; padding:6px 10px;">
+            <option value="">All Verdicts</option>
+            <option value="PASS">PASS</option>
+            <option value="FAIL">FAIL</option>
+            <option value="WARNING">WARNING</option>
+          </select>
+          <button type="button" class="btn btn-primary" id="refreshBtn" style="padding:6px 14px;">🔄 Refresh</button>
+        </div>
+      </div>
+
+      <div id="ledgerSpinner" class="spinner" style="display:none;"></div>
+
+      <div style="overflow-x:auto;">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th>Inspection UUID</th>
+              <th>Date & Time</th>
+              <th>Category</th>
+              <th>Warehouse / Premises</th>
+              <th>Verdict</th>
+              <th>Score</th>
+              <th>Violations</th>
+              <th>Legal Evidence PDF</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ledgerTableBody">
+            <!-- Populated via API -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="emptyMessage" style="display:none; text-align:center; padding:40px; color:var(--text-muted);">
+        No inspection records found. Use the scanner to record a product inspection.
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadLedger();
+      document.getElementById('refreshBtn').addEventListener('click', loadLedger);
+      document.getElementById('filterCategory').addEventListener('change', loadLedger);
+      document.getElementById('filterVerdict').addEventListener('change', loadLedger);
+    });
+
+    async function loadLedger() {
+      const spinner = document.getElementById('ledgerSpinner');
+      const tbody = document.getElementById('ledgerTableBody');
+      const emptyMsg = document.getElementById('emptyMessage');
+      
+      if (spinner) spinner.style.display = 'block';
+      tbody.innerHTML = '';
+      emptyMsg.style.display = 'none';
+
+      const cat = document.getElementById('filterCategory').value;
+      const verdict = document.getElementById('filterVerdict').value;
+
+      let url = '/api/inspections?';
+      if (cat) url += `category=${cat}&`;
+      if (verdict) url += `verdict=${verdict}&`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Failed to fetch ledger');
+        const records = await res.json();
+
+        if (records.length === 0) {
+          emptyMsg.style.display = 'block';
+          return;
+        }
+
+        records.forEach(r => {
+          const row = document.createElement('tr');
+          const dateStr = new Date(r.timestamp).toLocaleString();
+          const verdictClass = r.verdict === 'PASS' ? 'ok' : (r.verdict === 'FAIL' ? 'missing' : '');
+          const pdfLink = r.pdf_report_path ? `/api/files/pdfs/${r.pdf_report_path.split(/[\\/]/).pop()}` : '#';
+
+          row.innerHTML = `
+            <td><strong style="color:var(--accent-blue);">${r.inspection_uuid}</strong></td>
+            <td>${dateStr}</td>
+            <td><span style="text-transform:capitalize;">${r.product_category}</span></td>
+            <td>${r.warehouse_name}</td>
+            <td><span class="field-status-tag ${verdictClass}">${r.verdict}</span></td>
+            <td><strong>${r.compliance_score}%</strong></td>
+            <td><span style="color:${r.critical_violations_count > 0 ? '#f87171' : '#34d399'}; font-weight:700;">${r.critical_violations_count} Critical</span></td>
+            <td>
+              ${r.pdf_report_path ? `<a href="${pdfLink}" target="_blank" class="nav-btn" style="padding:4px 8px; font-size:0.75rem;">📥 PDF Memo</a>` : '—'}
+            </td>
+            <td>
+              <a href="/correction?id=${r.inspection_uuid}" class="nav-btn" style="padding:4px 8px; font-size:0.75rem;">✏️ Review</a>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+
+      } catch (err) {
+        console.error('Ledger load error:', err);
+      } finally {
+        if (spinner) spinner.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
