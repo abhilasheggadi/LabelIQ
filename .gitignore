@@ -1,0 +1,14 @@
+# In PowerShell:
+@"
+.env
+*.db
+*.sqlite3
+__pycache__/
+*.pyc
+uploads/*
+!uploads/.gitkeep
+generated_pdfs/*
+!generated_pdfs/.gitkeep
+.vscode/
+.idea/
+"@ | Out-File -FilePath .gitignore -Encoding utf8
