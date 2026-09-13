@@ -60,7 +60,7 @@ Field inspectors operating in concrete basements or rural warehouses can continu
 
 ## 🏗️ Architecture & Processing Pipeline
 
-`mermaid
+```mermaid
 flowchart TD
     A[Inspector Smartphone / PWA] -->|Hardware GPS Lock| B(Multi-Panel Image Capture + ISO ID-1 Card)
     B --> C{CV Pre-Processing Engine}
@@ -83,13 +83,13 @@ flowchart TD
     P --> Q[ReportLab Legal Seizure Memo PDF]
     P --> R[SHA-256 Cryptographic Evidence Stamp]
     P --> S[SQLite Database & Directorate Admin Registry]
-`
+```
 
 ---
 
 ## 📂 Project Structure
 
-`
+```text
 legal_metrology_project/
 ├── docs/
 │   └── resources/                       # Official Gazette & Statutory References
@@ -135,7 +135,7 @@ legal_metrology_project/
 ├── requirements.txt                     # Pinned project dependencies
 ├── .env.example                         # Environment configuration template
 └── .gitignore                           # Git ignore rules for databases, keys & cache
-`
+```
 
 ---
 
@@ -145,10 +145,10 @@ legal_metrology_project/
 | :--- | :--- | :--- | :--- |
 | **Rule 6(1)(a)** | Manufacturer / Packer / Importer Address | Street address, state & 6-digit PIN validation | Sec. 36(1) LM Act 2009 |
 | **Rule 6(1)(b)** | Common or Generic Name | Commodity designation on Principal Display Panel | Sec. 36(1) LM Act 2009 |
-| **Rule 6(1)(c)** | Net Quantity in Metric Units | Standard SI units (, kg, ml, l, N, U$) under Rule 12 | Sec. 36(1) & Rule 12 |
-| **Rule 6(1)(d)** | Month & Year of Manufacture / Packing | Regex verification of /YYYY$ or \ YYYY$ | Sec. 36(1) LM Act 2009 |
-| **Rule 6(1)(e)** | Maximum Retail Price (MRP) | Mandatory price declaration with (incl. of all taxes) | Sec. 36(1) LM Act 2009 |
-| **Rule 6(1)(s)** | Unit Sale Price (USP) | Pro-rata rate per  / ml / piece$ (mandatory since 2021) | Sec. 36(1) LM Act 2009 |
+| **Rule 6(1)(c)** | Net Quantity in Metric Units | Standard SI units (g, kg, ml, l, N, U) under Rule 12 | Sec. 36(1) & Rule 12 |
+| **Rule 6(1)(d)** | Month & Year of Manufacture / Packing | Regex verification of MM/YYYY or Month YYYY | Sec. 36(1) LM Act 2009 |
+| **Rule 6(1)(e)** | Maximum Retail Price (MRP) | Mandatory price declaration with `(incl. of all taxes)` | Sec. 36(1) LM Act 2009 |
+| **Rule 6(1)(s)** | Unit Sale Price (USP) | Pro-rata rate per g / ml / piece (mandatory since 2021) | Sec. 36(1) LM Act 2009 |
 | **Rule 6(1)(n)** | Consumer Care Cell | Helpline number and email contact verification | Sec. 36(1) LM Act 2009 |
 | **Rule 7 Table-1** | Minimum Font Size (Numeral & Letter) | ID-1 pixel-to-mm ratio vs. net weight tier | Rule 7(1) Schedule II |
 | **FSSAI Reg. 2.2.1** | Food License & Dietary Symbol | 14-digit FSSAI number and Veg (Green) / Non-Veg (Brown) | Sec. 58 FSS Act 2006 |
@@ -171,13 +171,13 @@ The official statutory gazettes and regulatory frameworks enforced by this platf
 * Git
 
 ### 1. Clone Repository
-`ash
-git clone https://github.com/abhilasheggadi/LabellQ.git
-cd LabellQ
-`
+```bash
+git clone https://github.com/abhilasheggadi/LabelIQ.git
+cd LabelIQ
+```
 
 ### 2. Create Virtual Environment
-`ash
+```bash
 # Windows (PowerShell)
 python -m venv venv
 .\venv\Scripts\Activate.ps1
@@ -185,35 +185,35 @@ python -m venv venv
 # Linux / macOS
 python3 -m venv venv
 source venv/bin/activate
-`
+```
 
 ### 3. Install Dependencies
-`ash
+```bash
 pip install --upgrade pip
 pip install -r requirements.txt
-`
+```
 
 ### 4. Configure Environment Variables
-Copy .env.example to .env and specify your Gemini API key (optional for offline regex mode, required for multimodal vision):
-`ash
+Copy `.env.example` to `.env` and specify your Gemini API key (optional for offline regex mode, required for multimodal vision):
+```bash
 # Windows PowerShell
 Copy-Item .env.example .env
 
 # Linux / macOS
 cp .env.example .env
-`
-Edit .env:
-`nv
+```
+Edit `.env`:
+```env
 GEMINI_API_KEY=your_gemini_api_key_here
 GEMINI_MODEL=gemini-3-flash-preview
 PORT=8000
-`
+```
 
 ### 5. Launch the Server
-`ash
+```bash
 python run_server.py
-`
-Open your browser and navigate to: **http://127.0.0.1:8000**
+```
+Open your browser and navigate to: **`http://127.0.0.1:8000`**
 
 ---
 
@@ -221,10 +221,10 @@ Open your browser and navigate to: **http://127.0.0.1:8000**
 
 Run the complete regression suite covering computer vision algorithms, deterministic rule matching, font-size calculations, and ReportLab PDF synthesis:
 
-`ash
+```bash
 # Run all unit tests
 python -m pytest legal_metrology/tests/test_cv.py legal_metrology/tests/test_ocr_and_rules.py legal_metrology/tests/test_pdf_generation.py -v
-`
+```
 
 ---
 
