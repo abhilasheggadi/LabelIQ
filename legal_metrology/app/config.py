@@ -12,7 +12,7 @@ PDF_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Legal Metrology Compliance Scanner"
+    APP_NAME: str = "LabelIQ — Legal Metrology Compliance Scanner"
     APP_VERSION: str = "2.0.0"
     API_PREFIX: str = "/api"
     

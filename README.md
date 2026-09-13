@@ -1,4 +1,4 @@
-# Integrated Field Inspection System (IFIS) — Legal Metrology Compliance Scanner
+# LabelIQ — Integrated Field Inspection System (IFIS)
 
 [![Smart India Hackathon 2026](https://img.shields.io/badge/SIH-2026-blue.svg)](https://www.sih.gov.in/)
 [![Ministry of Consumer Affairs](https://img.shields.io/badge/Govt_of_India-Department_of_Consumer_Affairs-darkred.svg)](https://consumeraffairs.nic.in/)
@@ -172,8 +172,8 @@ The official statutory gazettes and regulatory frameworks enforced by this platf
 
 ### 1. Clone Repository
 `ash
-git clone https://github.com/abhilasheggadi/legal-metrology-inspection-system.git
-cd legal-metrology-inspection-system
+git clone https://github.com/abhilasheggadi/LabellQ.git
+cd LabellQ
 `
 
 ### 2. Create Virtual Environment
