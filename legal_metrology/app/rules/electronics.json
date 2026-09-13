@@ -1,0 +1,48 @@
+{
+  "category": "electronics",
+  "category_name": "Electronics & Electrical Appliances",
+  "parent_rules": "base_rules.json",
+  "statutory_act": "LMPC Rules, 2011 read with Electronics and IT Goods (Requirement for Compulsory Registration) Order & BIS Act, 2016",
+  "additional_rules": {
+    "bis_crs_registration": {
+      "rule_number": "BIS Act 2016 & CRO 2021",
+      "rule_title": "BIS Registration / Standard Mark (R-XXXXXXXX / ISI)",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "BIS Compulsory Registration Scheme (CRS) number 'R-XXXXXXXX' with 'Self Declaration - Conforming to IS ...' or standard ISI mark.",
+      "statutory_citation": "MeitY Compulsory Registration Order: Electronic products must declare valid BIS Registration (R-XXXXXXXX) and IS standard number.",
+      "validation_pattern": "(bis|r\\s*-\\s*[0-9]{8}|is\\s*[0-9]+|isi\\s*mark)",
+      "remedy": "Immediate seizure of unregistered electronic goods under BIS Act and LMPC."
+    },
+    "electrical_rating": {
+      "rule_number": "Rule 6(1)(b) & BIS Standards",
+      "rule_title": "Electrical Power Ratings (Voltage, Current, Wattage)",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Rated voltage (e.g. 220-240V AC), frequency (50Hz), and input/output power (Wattage/Amperes).",
+      "statutory_citation": "LMPC Rules & BIS: Rated electrical specifications shall be marked clearly on the product and carton.",
+      "validation_pattern": "([0-9]+\\s*v|[0-9]+\\s*w|[0-9]+\\s*a|[0-9]+\\s*mah|[0-9]+\\s*hz)",
+      "remedy": "Notice for hazardous/unspecified electrical appliance."
+    },
+    "model_number": {
+      "rule_number": "Rule 6(1)(b) & BIS Scheme",
+      "rule_title": "Model Number / Item Code",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Model number or identifier corresponding exactly to BIS test report and invoice.",
+      "statutory_citation": "Rule 6(1)(b): Specific model designation of electrical/electronic commodity.",
+      "validation_pattern": "(model|item\\s*no|mod\\.?\\s*no\\.?)[^0-9a-zA-Z]*([a-zA-Z0-9/_-]+)",
+      "remedy": "Notice for model mismatch / traceability failure."
+    },
+    "ewaste_symbol": {
+      "rule_number": "E-Waste (Management) Rules, 2022",
+      "rule_title": "E-Waste Crossed-out Wheelie Bin Symbol",
+      "severity": "WARNING",
+      "mandatory": true,
+      "description": "Symbol of crossed-out wheeled bin indicating product must not be disposed of with municipal waste.",
+      "statutory_citation": "E-Waste Management Rules 2022: Producers shall ensure that the symbol indicating electronic waste is printed on packaging.",
+      "validation_pattern": "(e-waste|recycle|wheelie\\s*bin|do\\s*not\\s*dispose)",
+      "remedy": "Pollution control compliance notice."
+    }
+  }
+}

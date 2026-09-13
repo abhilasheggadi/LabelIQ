@@ -1,0 +1,91 @@
+{
+  "statutory_act": "Legal Metrology Act, 2009 & Legal Metrology (Packaged Commodities) Rules, 2011",
+  "penal_section": "Section 36(1) of Legal Metrology Act, 2009 (Fine up to ₹25,000 for first offence, ₹50,000 for second offence or imprisonment)",
+  "rules": {
+    "manufacturer_name_address": {
+      "rule_number": "Rule 6(1)(a)",
+      "rule_title": "Name & Address of Manufacturer / Packer / Importer",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Every package shall bear the name and complete address of the manufacturer, or packer, or importer.",
+      "statutory_citation": "Rule 6(1)(a) of Legal Metrology (Packaged Commodities) Rules, 2011: The name and complete address of the manufacturer, or where the manufacturer is not the packer, the name and address of the manufacturer and packer and for any imported package the name and complete address of the importer shall be declared.",
+      "validation_pattern": "(mfg|manufactured|packed|marketed|imported|distributed)\\s*(by|for)?",
+      "min_length": 15,
+      "remedy": "Issue seizure notice under Section 15 & compounding notice under Section 48."
+    },
+    "generic_name": {
+      "rule_number": "Rule 6(1)(b)",
+      "rule_title": "Generic / Common Name of Commodity",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "The common or generic names of the commodity contained in the package must be clearly stated on the principal display panel.",
+      "statutory_citation": "Rule 6(1)(b) of Legal Metrology (Packaged Commodities) Rules, 2011: The common or generic names of the commodity contained in the package and in case of packages with more than one product, the name and number or quantity of each product shall be mentioned.",
+      "validation_pattern": ".+",
+      "min_length": 3,
+      "remedy": "Notice for misleading packaging / missing commodity identification."
+    },
+    "net_quantity": {
+      "rule_number": "Rule 6(1)(c)",
+      "rule_title": "Net Quantity in Standard Units",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Net quantity in terms of standard unit of weight (g, kg), volume (ml, l, L), or measure/number (N, U, Units, Pieces).",
+      "statutory_citation": "Rule 6(1)(c) & Rule 12 of LMPC Rules 2011: The net quantity, in terms of the standard unit of weight or measure, of the commodity contained in the package or where the commodity is sold by number, the number of the commodity contained in the package.",
+      "validation_pattern": "(\\d+(\\.\\d+)?)\\s*(g|kg|gm|gms|grams|ml|l|ltr|litres|liter|piece|pieces|pcs|unit|units|N|U|cm|m|meter)\\b",
+      "standard_units": ["g", "kg", "ml", "l", "N", "U", "pcs", "cm", "m"],
+      "font_size_check_required": true,
+      "remedy": "Immediate seizure memo under Rule 6(1)(c) read with Rule 12 & Rule 7."
+    },
+    "mfg_date": {
+      "rule_number": "Rule 6(1)(d)",
+      "rule_title": "Month and Year of Manufacture / Packing / Import",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Month and year in which the commodity is manufactured or packed or imported (e.g. MM/YYYY or Month YYYY).",
+      "statutory_citation": "Rule 6(1)(d) of LMPC Rules 2011: The month and year in which the commodity is manufactured or packed or imported shall be mentioned.",
+      "validation_pattern": "(mfg|mfd|packed|pkd|import|pkg|date)\\s*[:.]?\\s*(([0-1]?[0-9][/-][1-2][0-9]{3})|([a-zA-Z]{3,9}[\\s,.-]+[1-2][0-9]{3}))",
+      "remedy": "Violation under Rule 6(1)(d); notice to manufacturer/packer."
+    },
+    "mrp": {
+      "rule_number": "Rule 6(1)(e)",
+      "rule_title": "Maximum Retail Price (MRP) Declaration",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "The maximum retail price at which the commodity may be sold to the end consumer, inclusive of all taxes, with the wording 'MRP Rs. / ₹ ... (inclusive of all taxes)'.",
+      "statutory_citation": "Rule 6(1)(e) of LMPC Rules 2011: Maximum retail price at which the commodity in packaged form may be sold to the consumer inclusive of all taxes in Indian Rupees.",
+      "validation_pattern": "(m\\.?r\\.?p\\.?|max\\.?\\s*retail\\s*price)[^0-9₹rs]*[₹rs]?\\.?\\s*(\\d+(\\.\\d{1,2})?)",
+      "requires_taxes_clause": true,
+      "remedy": "Punishable under Section 36(1) for overcharging / improper declaration."
+    },
+    "unit_sale_price": {
+      "rule_number": "Rule 6(1)(s)",
+      "rule_title": "Unit Sale Price (USP)",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Unit sale price in rupees per g/kg/ml/l/piece for packages containing more than 1 piece/1g/1ml, declared as ₹... per g/ml/piece.",
+      "statutory_citation": "Rule 6(1)(s) (Mandatory from Dec 2021 Amendment): Unit sale price shall be declared on pre-packaged commodities to facilitate price comparison.",
+      "validation_pattern": "(unit\\s*sale\\s*price|usp|u\\.s\\.p\\.?)[^0-9₹rs]*[₹rs]?\\.?\\s*(\\d+(\\.\\d{1,2})?)\\s*/?\\s*(per|/)?\\s*(g|kg|ml|l|piece|N|U|cm|m)",
+      "remedy": "Issue compounding notice under Rule 6(1)(s) amendment."
+    },
+    "consumer_care": {
+      "rule_number": "Rule 6(1)(n)",
+      "rule_title": "Consumer Care / Grievance Redressal Details",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Name, address, telephone number, and email address of the designated officer for consumer complaints.",
+      "statutory_citation": "Rule 6(1)(n) of LMPC Rules 2011: The name, address, telephone number and e-mail address of the person who can be contacted by the consumer in case of complaints or grievance.",
+      "validation_components": ["phone_or_tollfree", "email", "address_or_designation"],
+      "remedy": "Notice for non-compliance of mandatory consumer grievance mechanism."
+    },
+    "country_of_origin": {
+      "rule_number": "Rule 6(1)(a) Proviso",
+      "rule_title": "Country of Origin / Made In",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Country of origin or manufacture shall be declared for imported or manufactured commodities.",
+      "statutory_citation": "Rule 6(1)(a) Proviso (2020 Amendment): The country of origin or manufacture shall be mentioned on the package.",
+      "validation_pattern": "(made\\s*in|country\\s*of\\s*origin|origin)\\s*[:.]?\\s*([a-zA-Z\\s]+)",
+      "remedy": "Violation under Rule 6(1)(a) Proviso; customs and LM seizure memo."
+    }
+  }
+}

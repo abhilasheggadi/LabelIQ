@@ -1,0 +1,18 @@
+{
+  "category": "general",
+  "category_name": "General Packaged Commodities",
+  "parent_rules": "base_rules.json",
+  "statutory_act": "Legal Metrology Act, 2009 read with Legal Metrology (Packaged Commodities) Rules, 2011",
+  "additional_rules": {
+    "size": {
+      "rule_number": "Rule 6(1)(f)",
+      "rule_title": "Size / Dimensions of Commodity (Rule 6(1)(f))",
+      "severity": "WARNING",
+      "mandatory": false,
+      "description": "Size / Dimensions of commodity in centimeters (cm), meters (m), or millimeters (mm) if relevant.",
+      "statutory_citation": "Rule 6(1)(f): Where the package contains items sold by size or dimension, size/dimensions in metric units.",
+      "validation_pattern": "([0-9]+\\.?[0-9]*\\s*(cm|mm|m|inch|ft|cms|mtr))",
+      "remedy": "Declare size/dimensions in standard metric units (cm/m/mm) on the principal display panel."
+    }
+  }
+}

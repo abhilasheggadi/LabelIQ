@@ -1,0 +1,48 @@
+{
+  "category": "cosmetics",
+  "category_name": "Cosmetics & Personal Care",
+  "parent_rules": "base_rules.json",
+  "statutory_act": "LMPC Rules, 2011 read with Drugs and Cosmetics Act, 1940 (Cosmetics Rules, 2020)",
+  "additional_rules": {
+    "cosmetic_mfg_license": {
+      "rule_number": "Cosmetics Rules, 2020 Rule 34",
+      "rule_title": "Manufacturing License Number (M.L. / Mfg Lic)",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Manufacturing license number issued by State Drug Controller / CDSCO.",
+      "statutory_citation": "Cosmetics Rules, 2020 Rule 34: The manufacturing licence number under which the cosmetic is manufactured preceded by 'M.L. No.' or 'Mfg. Lic. No.'",
+      "validation_pattern": "(m\\.?l\\.?\\s*no\\.?|mfg\\.?\\s*lic\\.?\\s*no\\.?|license\\s*no\\.?|licence\\s*no\\.?)[^0-9a-zA-Z]*([a-zA-Z0-9/_-]+)",
+      "remedy": "Unlicensed cosmetic seizure under Drugs & Cosmetics Act & LMPC."
+    },
+    "batch_lot_number": {
+      "rule_number": "Rule 6(1)(q) & Cosmetics Rule 34",
+      "rule_title": "Batch Number / Lot Number (B.No. / Lot)",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "A distinctive batch number preceded by letter 'B' or 'Batch No.' or 'Lot No.'",
+      "statutory_citation": "Cosmetics Rules: A distinctive batch number, being the number by reference to which details of manufacture, can be traced.",
+      "validation_pattern": "(batch\\s*no\\.?|b\\.?\\s*no\\.?|lot\\s*no\\.?)[^0-9a-zA-Z]*([a-zA-Z0-9/_-]+)",
+      "remedy": "Batch traceability violation notice."
+    },
+    "use_before_date": {
+      "rule_number": "Cosmetics Rule 34 & LMPC Rule 6(1)(d)",
+      "rule_title": "Use Before / Expiry Date (Use Before / Exp)",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Date of expiry or 'Use before' date for cosmetics with shelf life less than or equal to 36 months.",
+      "statutory_citation": "Cosmetics Rules, 2020: The month and year of manufacture and the date of expiry (month and year) must be stated.",
+      "validation_pattern": "(use\\s*before|expiry\\s*date|exp\\.?\\s*date|best\\s*before)[^0-9a-zA-Z]*([0-9]{1,2}[/-][0-9]{2,4}|[0-9]+\\s*months|[a-zA-Z]{3,9}\\s*[0-9]{4})",
+      "remedy": "Seizure of expired / unlabeled cosmetics."
+    },
+    "ingredients_declaration": {
+      "rule_number": "Cosmetics Rule 34(1)(d)",
+      "rule_title": "Full Ingredients Declaration (INCI List)",
+      "severity": "WARNING",
+      "mandatory": true,
+      "description": "List of all ingredients in descending order of concentration or INCI nomenclature.",
+      "statutory_citation": "Cosmetics Rules 2020: Every cosmetic package shall carry a declaration of ingredients using INCI or common names.",
+      "validation_pattern": "(ingredients|composition|contains)[^a-zA-Z]*([a-zA-Z\\s,]+)",
+      "remedy": "Notice for insufficient product disclosure."
+    }
+  }
+}

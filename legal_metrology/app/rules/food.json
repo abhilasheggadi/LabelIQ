@@ -1,0 +1,48 @@
+{
+  "category": "food",
+  "category_name": "Food & Edible Commodities",
+  "parent_rules": "base_rules.json",
+  "statutory_act": "LMPC Rules, 2011 read with Food Safety & Standards (Packaging and Labelling) Regulations, 2011",
+  "additional_rules": {
+    "fssai_license": {
+      "rule_number": "FSSAI Reg. 2.2.1(7) & Rule 6",
+      "rule_title": "FSSAI License / Registration Number & Logo",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "FSSAI logo and 14-digit FSSAI license/registration number on the principal display panel.",
+      "statutory_citation": "FSSAI Packaging and Labelling Regulations, 2011: The FSSAI logo and license number shall be displayed on the label in contrast to the background.",
+      "validation_pattern": "(fssai|lic\\.?\\s*no\\.?|license\\s*no\\.?)[^0-9]*([0-9]{14})",
+      "remedy": "Non-compliance penalty under Section 58 of FSS Act and Rule 6(1) LMPC."
+    },
+    "veg_nonveg_logo": {
+      "rule_number": "FSSAI Reg. 2.2.2(4)",
+      "rule_title": "Vegetarian / Non-Vegetarian Symbol",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Green filled circle inside green outlined square (Veg) or Brown filled triangle/circle inside brown square (Non-Veg).",
+      "statutory_citation": "FSSAI Regulations: Every package of 'Vegetarian' / 'Non-Vegetarian' food shall bear a declaration in the form of a specified symbol.",
+      "validation_pattern": "(100%\\s*veg|vegetarian|non-veg|green\\s*dot|brown\\s*dot)",
+      "remedy": "Notice for failure to declare dietary symbol."
+    },
+    "best_before_expiry": {
+      "rule_number": "Rule 6(1)(d) & FSSAI Reg. 2.2.2(10)",
+      "rule_title": "Best Before / Expiry / Use By Date",
+      "severity": "CRITICAL",
+      "mandatory": true,
+      "description": "Best Before date or Expiry Date in Month/Year or DD/MM/YYYY format or 'Best before X months from manufacture'.",
+      "statutory_citation": "Rule 6(1)(d) of LMPC Rules: The month and year indicating 'best before' or 'use by' date for perishable commodities.",
+      "validation_pattern": "(best\\s*before|use\\s*by|expiry\\s*date|exp\\.?\\s*date)[^0-9a-zA-Z]*([0-9]{1,2}[/-][0-9]{2,4}|[0-9]+\\s*months)",
+      "remedy": "Sale of expired/unmarked food punishable under FSS Act and LM Act."
+    },
+    "ingredients_list": {
+      "rule_number": "FSSAI Reg. 2.2.2(2)",
+      "rule_title": "List of Ingredients & Nutritional Facts",
+      "severity": "WARNING",
+      "mandatory": true,
+      "description": "Complete list of ingredients in descending order of weight or volume, including nutritional information per 100g/serving.",
+      "statutory_citation": "FSSAI Regulations: Ingredients list and nutritional information per 100g or 100ml or per single consumption pack.",
+      "validation_pattern": "(ingredients|nutritional\\s*information|nutritional\\s*facts|energy|protein|carbohydrates)",
+      "remedy": "Label rectification notice within 15 days."
+    }
+  }
+}
