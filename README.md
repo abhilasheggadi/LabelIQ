@@ -91,6 +91,9 @@ flowchart TD
 
 `
 legal_metrology_project/
+├── docs/
+│   └── resources/                       # Official Gazette & Statutory References
+│       └── Legal_Metrology_Packaged_Commodities_Rules_2011.pdf
 ├── legal_metrology/
 │   ├── app/
 │   │   ├── rules/                       # Statutory rule books codified in JSON
@@ -149,8 +152,15 @@ legal_metrology_project/
 | **Rule 6(1)(n)** | Consumer Care Cell | Helpline number and email contact verification | Sec. 36(1) LM Act 2009 |
 | **Rule 7 Table-1** | Minimum Font Size (Numeral & Letter) | ID-1 pixel-to-mm ratio vs. net weight tier | Rule 7(1) Schedule II |
 | **FSSAI Reg. 2.2.1** | Food License & Dietary Symbol | 14-digit FSSAI number and Veg (Green) / Non-Veg (Brown) | Sec. 58 FSS Act 2006 |
-| **CDSCO Rule 34** | Cosmetic License & Batch Traceability | Manufacturing license number (.L.$) & Batch/Lot ID | Drugs & Cosmetics Act |
-| **MeitY CRO 2021** | BIS Compulsory Registration Scheme | -XXXXXXXX$ registration format & IS standards | BIS Act, 2016 |
+| **CDSCO Rule 34** | Cosmetic License & Batch Traceability | Manufacturing license number (M.L.) & Batch/Lot ID | Drugs & Cosmetics Act |
+| **MeitY CRO 2021** | BIS Compulsory Registration Scheme | R-XXXXXXXX registration format & IS standards | BIS Act, 2016 |
+
+---
+
+## 📚 Official Statutory References & Gazette
+
+The official statutory gazettes and regulatory frameworks enforced by this platform are bundled in the repository:
+* [📄 Legal Metrology (Packaged Commodities) Rules, 2011 (Official Gazette PDF)](docs/resources/Legal_Metrology_Packaged_Commodities_Rules_2011.pdf)
 
 ---
 
