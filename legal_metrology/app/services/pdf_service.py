@@ -2,7 +2,7 @@ import os
 import hashlib
 import datetime
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
